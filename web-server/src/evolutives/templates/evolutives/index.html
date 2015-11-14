@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block localdeclarations %}
+<script type="text/javascript">
+
+MAX_ALGORITHMS_IN_WORKSPACE = 5;
+
+$(document).ready(function(){
+	sessionStorage.available_index = 0;
+	$("#fitness-selection").material_select();
+});
+
+function first_available_index(){
+	if (sessionStorage.available_index < MAX_ALGORITHMS_IN_WORKSPACE) {
+		return sessionStorage.available_index++;
+	}
+	else return -1;
+}
+
+function new_algorithm()
+{
+	index = first_available_index();
+	if (index != -1){		
+		$.ajax({
+
+			type: "GET",
+			url: 'new_algorithm',
+			data: {'index': index},
+			success: function(data) {
+				$('#analysis-workspace').append(data);
+				var newDiv = $('#analysis-workspace .alg-wrapper:last')
+				$(newDiv).css({'display':'none'});
+
+				$(newDiv).show('slow', function(){
+					$("body, html").animate({
+						scrollTop: $(window).height()
+					}, 'slow');
+				})			
+			}
+
+		});
+	}
+
+	else {
+		Materialize.toast('Too many algorithms in workspace!', 4000);
+	}
+
+}
+
+</script>
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+	<div class="section">
+		<div class="container">
+			<h2 class="header center orange-text hide-on-med-and-down">Evolutive Systems<br>Algorithms Evaluation</h2>
+			<h2 class="header center orange-text hide-on-large-only">Evolutive <br class="hide-on-med-only">Algorithms </h2>
+			<div class="hide-on-med-and-down">
+				<br>
+				<p class="flow-text center-align">Based on the Evolutive Systems Applied to Robotics class (University of Sao Paulo - 2015 Fall), we're writing different types of Evolutive Algorithms and providing a tool to easily visualize their running analytics. After selecting the desired Fitness function to be evaluated in the box below, click the Plus button at the bottom of the page to add a new Algorithm to your Algorithm Analysis workspace.</p>
+			</div>
+			<br>
+		</div>
+	</div>
+
+	<div id="fitness-def" class="section orange lighten-1">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 l6">
+					<h5 class="header white-text">Select the function to be evaluated:</h5>
+					{% if fitness_list %}
+					<label class="black-text">Fitness function</label>
+					<select id="fitness-selection" onchange="" class="browser-default">
+						<option value="" disabled selected>Choose your option</option>
+						{% for function in fitness_list %}
+						<option value="{{ function.name }}">{{ function.name }}</option>
+						{% endfor %}
+					</select>
+					{% else %}
+					<p>No fitness functions available.</p>
+					{% endif %}
+				</div>
+				<div class="col m12 l6">
+					<a style="top:3em" class="btn waves-effect waves-light teal white-text right tooltipped" data-position="top" data-delay="50" data-tooltip="Click to run all the built-in algorithms you added into the workspace below!"><i class="material-icons right">play_arrow</i>Run them all!</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="analysis-workspace">
+	</div>
+
+	<div class="divider"></div>
+
+	<div style="padding-top:0em" class="section center">
+		<br><br>
+		<a id="add_alg_btn" onclick="new_algorithm()" class="btn-floating btn-large waves-effect waves-light light-blue tooltipped" data-position="top" data-delay="50" data-tooltip="Add an algorithm to your workspace!"><i class="material-icons">add</i></a>
+	</div>
+
+{% endblock %}

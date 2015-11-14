@@ -1,0 +1,88 @@
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$("#alg{{ index }}_language").material_select();
+});
+
+function renderParameter{{ index }}(parameterName){
+	switch(parameterName) {
+		case 'mutation_rate':
+			return 'MR';
+		case 'population_size':
+			return 'PS'
+		default:
+			return null
+	}
+}
+
+function alg{{ index }}SetParameters(selector_id){
+	var params = (sessionStorage[selector_id.value]).split(', ');
+	$("#alg{{ index }}_params").empty();
+
+	for (i in params){
+		$("#alg{{ index }}_params").append(renderParameter{{ index }}(params[i]));
+	}
+}
+
+</script>
+
+{% if index|divisibleby:2 %}
+<div style="padding-top:3em" id="alg{{ index }}" class="section alg-wrapper">
+{% else %}
+<div style="padding-top:3em" id="alg{{ index }}" class="section alg-wrapper light-blue lighten-5">
+{% endif %}
+	<div class="container" style="display:inherit">
+		<div class="row">
+			<div class="col s12 m2">
+				<div class="row">
+					<div class="col s12">
+						<b>Algorithm {{ index }}:</b>
+					</div>
+				</div>
+			</div>
+			<div class="col s12 m10">
+				<div class="row">
+					<div class="col s12">
+						{% if code_list %}
+						<select id="alg{{ index }}_language" onchange="alg{{ index }}SetParameters(this)">
+							<option value="" disabled selected>Choose your option</option>
+							{% for code in code_list %}
+								{% if code.built_in == True %}
+									<option value="{{ code.language }}_{{code.algorithm}}">{{ code.get_language_display }} - {{code.get_algorithm_display }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+						{% else %}
+						<p>No codes available.</p>
+						{% endif %}
+
+						<!-- Setting global variables for parameters -->
+						{% if code_list %}
+							{% for code in code_list %}
+								{% if code.built_in == True %}
+								<script type="text/javascript">
+									sessionStorage.{{ code.language }}_{{code.algorithm}} =
+											{% for param in code.parameters.all %}
+												{% if not forloop.last %}
+													"{{param}}, " +
+												{% else %}
+													"{{param}}"
+												{% endif %}
+											{% endfor %}
+											;
+								</script>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+
+
+					</div>
+				</div>
+				<div class="row">
+					<div id="alg{{ index }}_params" class="col s12">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
