@@ -1,0 +1,23 @@
+<div class="row">
+	<div class="col s4 right-aligned">
+		{{ p.name }}:
+	</div>
+		{% if p.c_type == 'RNG' %}
+			<div class="col s6">
+				<span class="range-field">
+					<input type="range" id="alg{{ alg_index }}_{{short_name}}" min="{{ p.c_min }}" max="{{ p.c_max }}" />
+				</span>
+			</div>
+			<script type="text/javascript">
+				$("#alg{{ alg_index }}_{{short_name}}_val").empty();
+				$("#alg{{ alg_index }}_{{short_name}}_val").text( this.value );
+
+				$("#alg{{ alg_index }}_{{short_name}}").on("input", function(){
+					$("#alg{{ alg_index }}_{{short_name}}_val").empty();
+					$("#alg{{ alg_index }}_{{short_name}}_val").text( this.value );
+				});
+			</script>
+			<div id="alg{{ alg_index }}_{{short_name}}_val" class="col s1"></div>
+			<div class="col s1"></div>
+		{% endif %}
+</div>
