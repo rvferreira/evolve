@@ -4,23 +4,33 @@ $(document).ready(function(){
 	$("#alg{{ index }}_language").material_select();
 });
 
-function renderParameter{{ index }}(parameterName){
-	switch(parameterName) {
-		case 'mutation_rate':
-			return 'MR';
-		case 'population_size':
-			return 'PS'
-		default:
-			return null
-	}
+function renderParameter{{ index }}(parameterName, container, is_metric)
+{
+	$.ajax({
+		type: "GET",
+		url: "get_parameter",
+		data: {
+			"query":parameterName,
+			"alg_index":{{index}},
+			"is_metric":is_metric,
+		},
+		success: function(data) {
+			container.append(data);
+		}
+
+	});
+
 }
 
 function alg{{ index }}SetParameters(selector_id){
 	var params = (sessionStorage[selector_id.value]).split(', ');
 	$("#alg{{ index }}_params").empty();
+	$("#alg{{ index }}_metrics").empty();
+	$("#alg{{ index }}_metrics").append($('<div class="row" />').html("<div class='col s12'>Metrics:</div>"));
 
 	for (i in params){
-		$("#alg{{ index }}_params").append(renderParameter{{ index }}(params[i]));
+		renderParameter{{ index }}(params[i], $("#alg{{ index }}_params"), false);
+		renderParameter{{ index }}(params[i], $("#alg{{ index }}_metrics"), true);
 	}
 }
 
@@ -60,17 +70,17 @@ function alg{{ index }}SetParameters(selector_id){
 						{% if code_list %}
 							{% for code in code_list %}
 								{% if code.built_in == True %}
-								<script type="text/javascript">
-									sessionStorage.{{ code.language }}_{{code.algorithm}} =
-											{% for param in code.parameters.all %}
-												{% if not forloop.last %}
-													"{{param}}, " +
-												{% else %}
-													"{{param}}"
-												{% endif %}
-											{% endfor %}
-											;
-								</script>
+									<script type="text/javascript">
+										sessionStorage.{{ code.language }}_{{code.algorithm}} =
+												{% for param in code.parameters.all %}
+													{% if not forloop.last %}
+														"{{param}}, " +
+													{% else %}
+														"{{param}}"
+													{% endif %}
+												{% endfor %}
+												;
+									</script>
 								{% endif %}
 							{% endfor %}
 						{% endif %}
@@ -79,8 +89,10 @@ function alg{{ index }}SetParameters(selector_id){
 					</div>
 				</div>
 				<div class="row">
-					<div id="alg{{ index }}_params" class="col s12">
-					</div>
+					<form id="alg{{ index }}_form">
+						<div id="alg{{ index }}_params" class="col s8"></div>
+						<div id="alg{{ index }}_metrics" class="col s4"></div>
+					</form>
 				</div>
 			</div>
 		</div>

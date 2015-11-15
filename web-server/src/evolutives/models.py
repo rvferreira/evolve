@@ -8,8 +8,21 @@ class FitnessFunction(models.Model):
 		
 
 class Parameter(models.Model):
+	TEXT_FIELD = 'TXT'
+	RANGE_FIELD = 'RNG'
+	CHECKBOX_FIELD = 'CHK'
+
+	COMPONENT_CHOICES = (
+		(TEXT_FIELD, 'text'),
+		(RANGE_FIELD, 'range'),
+		(CHECKBOX_FIELD, 'checkbox'),
+	)
+
 	name = models.CharField(max_length=20)
-	type = models.CharField(max_length=50)
+	c_type = models.CharField(max_length=3, choices=COMPONENT_CHOICES, default=RANGE_FIELD)
+	c_min = models.IntegerField(blank=True, null=True, default=1)
+	c_max = models.IntegerField(blank=True, null=True, default=100)
+	c_is_metric = models.BooleanField(blank=True, default=False)
 
 	def __str__(self):
 		return self.name

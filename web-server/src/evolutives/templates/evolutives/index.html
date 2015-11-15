@@ -10,6 +10,14 @@ $(document).ready(function(){
 	$("#fitness-selection").material_select();
 });
 
+function clean_workspace(){
+	sessionStorage.available_index = 0;
+	$("#analysis-workspace").hide('slow', function(){
+		$("#analysis-workspace").empty()
+		$("#analysis-workspace").show()
+	})
+}
+
 function first_available_index(){
 	if (sessionStorage.available_index < MAX_ALGORITHMS_IN_WORKSPACE) {
 		return sessionStorage.available_index++;
@@ -84,8 +92,17 @@ function new_algorithm()
 					<p>No fitness functions available.</p>
 					{% endif %}
 				</div>
-				<div class="col m12 l6">
-					<a style="top:3em" class="btn waves-effect waves-light teal white-text right tooltipped" data-position="top" data-delay="50" data-tooltip="Click to run all the built-in algorithms you added into the workspace below!"><i class="material-icons right">play_arrow</i>Run them all!</a>
+				<div class="col s6 m12 l6">
+					<div class="row">
+						<div class="col s12 m6">
+							<a style="top:3em" class="btn waves-effect waves-light teal white-text right tooltipped" data-position="top" data-delay="50" data-tooltip="Click to run all the built-in algorithms you added into the workspace below!"><i class="material-icons right">play_arrow</i>Run them all!</a>
+						</div class="row hide-on-med-and-up">
+							<div>
+							<div class="col s12 m6">
+								<a style="top:3em" class="btn waves-effect waves-light teal white-text tooltipped" data-position="top" data-delay="50" data-tooltip="Click to clean your workspace!" onclick="clean_workspace()"><i class="material-icons right">delete</i>Clean workspace!</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
