@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.template import RequestContext, loader
 
 from .models import Code, FitnessFunction, Parameter
+from algorithms.EvolutiveStrategy import es_run
 
 def index(request):
 
@@ -13,6 +14,21 @@ def index(request):
 		'fitness_list': fitness_list,
 	})
 
+	return HttpResponse(template.render(context))
+
+def run_algorithm(request):
+	population_size = request.GET.get('Population_Size')
+	n_dimensions = request.GET.get('Dimensions')
+	n_generations = request.GET.get('Max_Generation')
+
+	print population_size, n_dimensions, n_generations
+
+	template = loader.get_template('evolutives/results.html')
+	best_fitness = es_run(int(population_size), int(n_dimensions), int(n_generations))
+	
+	context = RequestContext(request, {
+		'best_fitness' : best_fitness
+	})
 	return HttpResponse(template.render(context))
 
 def new_algorithm(request):
@@ -49,19 +65,10 @@ def get_parameter(request):
 		})
 
 	else:
-	
-		return HttpResponseNotFound('404')
-
+		return HttpResponse('')
 
 	return HttpResponse(template.render(context))
 
-	# 	template = loader.get_template('evolutives/parameter.html')
-	# 	p = Parameter.objects.get(name = request.GET.get('query'))
-	# 	context = RequestContext(request, {
-	# 		'p' : p,
-	# 		'alg_index' : request.GET.get('alg_index'),
-	# 		'short_name': p.name.split(' ', 1)[0]
-	# 	})
-	# 	return HttpResponse(template.render(context))
-		
-	# else return HttpResponse("oi")
+def get_preloader(request):
+	template = loader.get_template('evolutives/preloader.html')
+	return HttpResponse(template.render())

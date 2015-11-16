@@ -55,7 +55,7 @@ function alg{{ index }}SetParameters(selector_id){
 					<div class="col s12">
 						{% if code_list %}
 						<select id="alg{{ index }}_language" onchange="alg{{ index }}SetParameters(this)">
-							<option value="" disabled selected>Choose your option</option>
+							<option value="test" disabled selected>Choose your option</option>
 							{% for code in code_list %}
 								{% if code.built_in == True %}
 									<option value="{{ code.language }}_{{code.algorithm}}">{{ code.get_language_display }} - {{code.get_algorithm_display }}</option>

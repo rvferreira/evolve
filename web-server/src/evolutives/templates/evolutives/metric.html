@@ -1,7 +1,7 @@
 <div class="row">
 	{% if p.c_type == 'CHK' %}
 		<div class="col s12">
-			<input type="checkbox" class="filled-in" id="alg{{ alg_index }}_{{short_name}}" />
+			<input type="checkbox" class="filled-in" name="alg{{ alg_index }}_{{short_name}}" checked/>
 			<label for="alg{{ alg_index }}_{{short_name}}">{{ p.name }}</label>
 		</div>
 	{% endif %}

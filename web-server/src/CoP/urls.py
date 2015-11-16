@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from evolutives.views import get_preloader
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^evaluate/', include('evolutives.urls'))
+    url(r'^evaluate/', include('evolutives.urls')),
+	url(r'^get_preloader$', get_preloader, name='get_preloader'),
 ]

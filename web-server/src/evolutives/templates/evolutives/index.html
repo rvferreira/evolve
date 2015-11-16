@@ -10,12 +10,56 @@ $(document).ready(function(){
 	$("#fitness-selection").material_select();
 });
 
+function run_algorithm(algorithm, alg_index, alg_params, results_container){
+	$.ajax({
+		type: 'GET',
+		url: 'run_algorithm?'+ "alg_type="+algorithm+"&alg_index="+alg_index+"&"+alg_params, 
+		success: function(data) {
+			$(results_container).empty().append(data);
+		},
+		timeout: 30000,
+	});
+}
+
+function run_algorithms(caller){
+	if (!$(caller).hasClass("disabled")){	
+
+		$("#add_alg_btn").addClass("disabled");
+		$("#run_btn").addClass("disabled");
+		$(".alg-wrapper").each(function(){
+			var algorithm = $(this).find('select').val();
+			if(algorithm){
+				var $form = $(this).find("form");
+				var alg_index = $form.serialize().match(/alg[0-9]*_/)[0][3];
+				var set_params = $form.serialize().replace(/alg[0-9]*_/g,'');
+				var $results_container = $form.parent().parent();
+				$results_container.empty();
+				$.get("/get_preloader", function(data){
+					$results_container.append(data);
+					run_algorithm(algorithm, alg_index, set_params, $results_container);
+				})
+			}
+			else{
+				$(this).hide('slow', function(){
+					$(this).remove();
+				});
+			}
+		});
+
+	}
+	else {
+			Materialize.toast('Clean your workspace before proceeding!', 4000);
+	}
+}
+
 function clean_workspace(){
 	sessionStorage.available_index = 0;
 	$("#analysis-workspace").hide('slow', function(){
 		$("#analysis-workspace").empty()
 		$("#analysis-workspace").show()
 	})
+	$("#run_btn").removeClass("disabled");
+	$("#add_alg_btn").removeClass("disabled");
 }
 
 function first_available_index(){
@@ -25,32 +69,35 @@ function first_available_index(){
 	else return -1;
 }
 
-function new_algorithm()
+function new_algorithm(caller)
 {
-	index = first_available_index();
-	if (index != -1){		
-		$.ajax({
+	if (!$(caller).hasClass("disabled")){
+		index = first_available_index();
+		if (index != -1){		
+			$.ajax({
 
-			type: "GET",
-			url: 'new_algorithm',
-			data: {'index': index},
-			success: function(data) {
-				$('#analysis-workspace').append(data);
-				var newDiv = $('#analysis-workspace .alg-wrapper:last')
-				$(newDiv).css({'display':'none'});
+				type: "GET",
+				url: 'new_algorithm',
+				data: {'index': index},
+				success: function(data) {
+					$('#analysis-workspace').append(data);
+					var newDiv = $('#analysis-workspace .alg-wrapper:last')
+					$(newDiv).css({'display':'none'});
 
-				$(newDiv).show('slow', function(){
-					$("body, html").animate({
-						scrollTop: $(window).height()
-					}, 'slow');
-				})			
-			}
-
-		});
+					$(newDiv).show('slow', function(){
+						$("body, html").animate({
+							scrollTop: $(window).height()
+						}, 'slow');
+					})			
+				}
+			});
+		}
+		else {
+			Materialize.toast('Too many algorithms in workspace!', 4000);
+		}
 	}
-
 	else {
-		Materialize.toast('Too many algorithms in workspace!', 4000);
+			Materialize.toast('Clean your workspace before proceeding!', 4000);
 	}
 
 }
@@ -95,7 +142,7 @@ function new_algorithm()
 				<div class="col s6 m12 l6">
 					<div class="row">
 						<div class="col s12 m6">
-							<a style="top:3em" class="btn waves-effect waves-light teal white-text right tooltipped" data-position="top" data-delay="50" data-tooltip="Click to run all the built-in algorithms you added into the workspace below!"><i class="material-icons right">play_arrow</i>Run them all!</a>
+							<a id="run_btn" style="top:3em" class="btn waves-effect waves-light teal white-text right tooltipped" data-position="top" data-delay="50" data-tooltip="Click to run all the built-in algorithms you added into the workspace below!" onclick="run_algorithms(this)"><i class="material-icons right">play_arrow</i>Run them all!</a>
 						</div class="row hide-on-med-and-up">
 							<div>
 							<div class="col s12 m6">
@@ -115,7 +162,7 @@ function new_algorithm()
 
 	<div style="padding-top:0em" class="section center">
 		<br><br>
-		<a id="add_alg_btn" onclick="new_algorithm()" class="btn-floating btn-large waves-effect waves-light light-blue tooltipped" data-position="top" data-delay="50" data-tooltip="Add an algorithm to your workspace!"><i class="material-icons">add</i></a>
+		<a id="add_alg_btn" onclick="new_algorithm(this)" class="btn-floating btn-large waves-effect waves-light light-blue tooltipped" data-position="top" data-delay="50" data-tooltip="Add an algorithm to your workspace!"><i class="material-icons">add</i></a>
 	</div>
 
 {% endblock %}
