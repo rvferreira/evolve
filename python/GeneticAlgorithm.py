@@ -2,13 +2,14 @@ from random import seed, randrange
 from fitness import ackley
 from operator import attrgetter
 from math import cos, exp, sqrt, pi, fsum
+from time import clock
 
 DECIMAL_APPROX = 6
 
-NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_GENERATIONS = 10
 
 INITIAL_FITNESS = 50.0
-POPULATION_SIZE = 10000
+POPULATION_SIZE = 100
 DIMENSIONS = 3
 
 MUTATION_INTENSITY = 0.1
@@ -123,17 +124,53 @@ class Population:
 		self.elements = self.elements[0:(len(self.elements)/2)]
 
 	def run_generation(self, number_of_generations, fitness_function, crossover_point, mutation_rate, mutation_intensity):
+		best_fitness_vector = []
 		for i in range(number_of_generations):
 			self.evolve(fitness_function, crossover_point, mutation_rate, mutation_intensity)
-			print i
-			self.printFitness()
+			best_fitness_vector.append(self.elements[0].fitness)
 			if self.elements[0].fitness == 0.0:
+				convergency_generation = i;
 				break
 
+		if i==number_of_generations-1:
+			j = number_of_generations-1
+			while best_fitness_vector[j] == best_fitness_vector[j-1]:
+				j-=1
+			convergency_generation = j
+
+		while i<number_of_generations-1:
+			i += 1
+			best_fitness_vector.append(0.0)
+
+
+		return best_fitness_vector, convergency_generation
+
 def main():
-	test = Population(POPULATION_SIZE, DIMENSIONS)
+	metrics = ['BEST_FITNESS_VECTOR', 'CONVERGENCY_GENERATION', 'PROCESSING_TIME']
 
-	test.run_generation(NUMBER_OF_GENERATIONS, ackley, CROSSOVER_POINT, MUTATION_RATE, MUTATION_INTENSITY)
+	result = ga_run(POPULATION_SIZE, DIMENSIONS, NUMBER_OF_GENERATIONS, MUTATION_RATE, metrics)
 
+	print result[0][result[1]], result[1], result[2]
+
+
+def ga_run(population_size, n_dimensions, n_generations, mutation_rate, metrics):
+	time = clock()
+
+	pop = Population(population_size, n_dimensions)
+	best_fitness_vector, convergency_generation = pop.run_generation(n_generations, ackley, CROSSOVER_POINT, mutation_rate, MUTATION_INTENSITY)
+
+	time = clock() - time
+
+	results = []
+
+	for request in metrics:
+		if request == 'BEST_FITNESS_VECTOR':
+			results.append(best_fitness_vector)
+		elif request == 'CONVERGENCY_GENERATION':
+			results.append(convergency_generation)
+		elif request == 'PROCESSING_TIME':
+			results.append(time)
+
+	return results
 
 if __name__ == '__main__': main()
