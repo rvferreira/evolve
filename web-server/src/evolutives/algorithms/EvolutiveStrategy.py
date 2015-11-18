@@ -145,19 +145,18 @@ class Population:
 			self.evolve(fitness_function, crossover_method)
 			best_fitness_vector.append(self.elements[0].fitness)
 			if self.elements[0].fitness == 0.0:
-				convergency_generation = i
 				break
 
-		if i==number_of_generations-1:
-			j = number_of_generations-1
-			while best_fitness_vector[j] == best_fitness_vector[j-1]:
-				j-=1
-			convergency_generation = j
-
-		while i<number_of_generations-1:
-			i += 1
+		for i in range(number_of_generations - len(best_fitness_vector)):
 			best_fitness_vector.append(0.0)
 
+		convergency_generation = -1;
+		convergency_fitness = INITIAL_FITNESS
+
+		for i in range(len(best_fitness_vector)):
+			if best_fitness_vector[i] != convergency_fitness:
+				convergency_fitness = best_fitness_vector[i]
+				convergency_generation = i
 
 		return best_fitness_vector, convergency_generation
 
