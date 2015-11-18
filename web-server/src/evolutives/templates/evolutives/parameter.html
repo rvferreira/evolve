@@ -5,20 +5,15 @@
 		{% if p.c_type == 'RNG' %}
 			<div class="col s6">
 				<span class="range-field">
-					<input type="range" name="alg{{ alg_index }}_{{short_name}}" min="{{ p.c_min }}" max="{{ p.c_max }}"/>
+					<input type="range" name="alg{{ alg_index }}_{{short_name}}" id="alg{{ alg_index }}_{{short_name}}" min="{{ p.c_min }}" max="{{ p.c_max }}"/>
 				</span>
 			</div>
 			<div id="alg{{ alg_index }}_{{short_name}}_val" class="col s1"></div>
 			<script type="text/javascript">
-				$("#alg{{ alg_index }}_{{short_name}}").on("input", function(){
-					$("#alg{{ alg_index }}_{{short_name}}_val").empty();
-					$("#alg{{ alg_index }}_{{short_name}}_val").text( $("#alg{{ alg_index }}_{{short_name}}").val() );
-				});
-
-				// $("#alg{{ alg_index }}_{{short_name}}").ready(function(){
-				// 	$("#alg{{ alg_index }}_{{short_name}}_val").empty();
-				// 	$("#alg{{ alg_index }}_{{short_name}}_val").text( ({{ p.c_min }}+{{ p.c_max }})/2 );
-				// });
+			$(document).ready(function(){
+				$("#alg{{ alg_index }}_{{short_name}}_val").text($("#alg{{ alg_index }}_{{short_name}}").val());
+				$("#alg{{ alg_index }}_{{short_name}}").on("input", function(){$("#alg{{ alg_index }}_{{short_name}}_val").text(this.value)});
+			});
 			</script>
 			<div class="col s1"></div>
 		{% endif %}

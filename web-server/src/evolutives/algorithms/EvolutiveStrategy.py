@@ -1,21 +1,15 @@
-# Evolutive Strategy Algorithm made by Valeska Paroni and Raphael Ferreira for Evolutive Algorithms classes.
-# 11/12/2015
-
 from random import seed, randrange, gauss
-from fitness import ackley
 from operator import attrgetter
 from math import exp, sqrt
+from time import clock
 
 DECIMAL_APPROX = 6
 
-NUMBER_OF_GENERATIONS = 20
-
 INITIAL_FITNESS = 50.0
-POPULATION_SIZE = 200
-DIMENSIONS = 4
-CROSSOVER_METHOD = 'LOCAL_INTERMEDIARY' #two fixed parents, child_chromossome = (parent1_chromossome + parent2_chromossome)/2 
+
+#CROSSOVER_METHOD = 'LOCAL_INTERMEDIARY' #two fixed parents, child_chromossome = (parent1_chromossome + parent2_chromossome)/2 
 #CROSSOVER_METHOD = 'LOCAL_DISCRETE' #two fixed parents, child_chromossome = chromossome of a random parent
-#CROSSOVER_METHOD = 'GLOBAL_INTERMEDIARY' #parents are not the same for all chromossomes. child_chromossome = (parent1_chromossome + parent2_chromossome)/2 
+CROSSOVER_METHOD = 'GLOBAL_INTERMEDIARY' #parents are not the same for all chromossomes. child_chromossome = (parent1_chromossome + parent2_chromossome)/2 
 #CROSSOVER_METHOD = 'GLOBAL_DISCRETE' #parents are not the same for all chromossomes. child_chromossome = chromossome of a random parent
 
 
@@ -44,6 +38,8 @@ class Element:
 			for i in range(n_dimensions):
 				(self.x).append(randrange(MIN_X_RANGE*100.0, MAX_X_RANGE*100.0) / 100.0)
 		else:
+			if (len(x_array)!=n_dimensions):
+				print "DEBUG x_array:", len(x_array), "n_dimensions:", n_dimensions
 			(self.x) = x_array
 
 	def computeElementFitness(self, fitness_function):
@@ -144,21 +140,46 @@ class Population:
 		self.elements = self.elements[0:(len(self.elements)/2)]
 
 	def run_generation(self, number_of_generations, fitness_function, crossover_method):
+		best_fitness_vector = []
 		for i in range(number_of_generations):
 			self.evolve(fitness_function, crossover_method)
-			# self.printFitness()
+			best_fitness_vector.append(self.elements[0].fitness)
 			if self.elements[0].fitness == 0.0:
+				convergency_generation = i
 				break
 
-		return self.elements[0].fitness
+		if i==number_of_generations-1:
+			j = number_of_generations-1
+			while best_fitness_vector[j] == best_fitness_vector[j-1]:
+				j-=1
+			convergency_generation = j
 
-def main():
-	test = Population(POPULATION_SIZE, DIMENSIONS)
-	test.run_generation(NUMBER_OF_GENERATIONS, ackley, CROSSOVER_METHOD)
+		while i<number_of_generations-1:
+			i += 1
+			best_fitness_vector.append(0.0)
 
-def es_run(population_size, n_dimensions, n_generations):
+
+		return best_fitness_vector, convergency_generation
+
+
+def es_run(population_size, n_dimensions, n_generations, fitness_function, metrics):
+	time = clock()
+
 	pop = Population(population_size, n_dimensions)
-	return pop.run_generation(n_generations, ackley, CROSSOVER_METHOD)
-	
+	best_fitness_vector, convergency_generation = pop.run_generation(n_generations, fitness_function, CROSSOVER_METHOD)
 
-if __name__ == '__main__': main()
+	time = clock() - time
+
+	results = []
+
+	for request in metrics:
+		if request == 'best_fitness':
+			results.append(best_fitness_vector[-1])
+		elif request == 'convergence_generation':
+			results.append(convergency_generation)
+		elif request == 'processing_time':
+			results.append(time)
+		elif request == 'best_fitness_vector':
+			results.append(best_fitness_vector)
+
+	return results

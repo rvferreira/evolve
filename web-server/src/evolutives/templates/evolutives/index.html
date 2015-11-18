@@ -7,13 +7,18 @@ MAX_ALGORITHMS_IN_WORKSPACE = 5;
 
 $(document).ready(function(){
 	sessionStorage.available_index = 0;
+	sessionStorage.fitness_function = "no_fitness_selected";
 	$("#fitness-selection").material_select();
 });
+
+function set_fitness_function(select_fitness){
+	sessionStorage.fitness_function = select_fitness.value;
+}
 
 function run_algorithm(algorithm, alg_index, alg_params, results_container){
 	$.ajax({
 		type: 'GET',
-		url: 'run_algorithm?'+ "alg_type="+algorithm+"&alg_index="+alg_index+"&"+alg_params, 
+		url: 'run_algorithm?'+ "alg_type="+algorithm+"&alg_index="+alg_index+ "&fitness=" + sessionStorage.fitness_function.toLowerCase() +"&"+alg_params, 
 		success: function(data) {
 			$(results_container).empty().append(data);
 		},
@@ -22,33 +27,40 @@ function run_algorithm(algorithm, alg_index, alg_params, results_container){
 }
 
 function run_algorithms(caller){
-	if (!$(caller).hasClass("disabled")){	
-
-		$("#add_alg_btn").addClass("disabled");
-		$("#run_btn").addClass("disabled");
-		$(".alg-wrapper").each(function(){
-			var algorithm = $(this).find('select').val();
-			if(algorithm){
-				var $form = $(this).find("form");
-				var alg_index = $form.serialize().match(/alg[0-9]*_/)[0][3];
-				var set_params = $form.serialize().replace(/alg[0-9]*_/g,'');
-				var $results_container = $form.parent().parent();
-				$results_container.empty();
-				$.get("/get_preloader", function(data){
-					$results_container.append(data);
-					run_algorithm(algorithm, alg_index, set_params, $results_container);
-				})
-			}
-			else{
-				$(this).hide('slow', function(){
-					$(this).remove();
-				});
-			}
-		});
-
+	if (sessionStorage.fitness_function == "no_fitness_selected"){
+		Materialize.toast('Select a Fitness Function before proceeding!', 4000);
 	}
-	else {
-			Materialize.toast('Clean your workspace before proceeding!', 4000);
+	else{
+		if (!$(caller).hasClass("disabled")){	
+
+			$("#add_alg_btn").addClass("disabled");
+			$("#run_btn").addClass("disabled");
+			$(".alg-wrapper").each(function(){
+				var algorithm = $(this).find('select').val();
+				if(algorithm){
+					var $form = $(this).find("form");
+					var alg_index = $form.serialize().match(/alg[0-9]*_/)[0][3];
+					var set_params = $form.serialize().replace(/alg[0-9]*_/g,'');
+					console.log(set_params);
+					
+					var $results_container = $form.parent().parent();
+					$results_container.empty();
+					$.get("/get_preloader", function(data){
+						$results_container.append(data);
+						run_algorithm(algorithm, alg_index, set_params, $results_container);
+					})
+				}
+				else{
+					$(this).hide('slow', function(){
+						$(this).remove();
+					});
+				}
+			});
+
+		}
+		else {
+				Materialize.toast('Clean your workspace before proceeding!', 4000);
+		}
 	}
 }
 
@@ -129,7 +141,7 @@ function new_algorithm(caller)
 					<h5 class="header white-text">Select the function to be evaluated:</h5>
 					{% if fitness_list %}
 					<label class="black-text">Fitness function</label>
-					<select id="fitness-selection" onchange="" class="browser-default">
+					<select id="fitness-selection" onchange="set_fitness_function(this)" class="browser-default">
 						<option value="" disabled selected>Choose your option</option>
 						{% for function in fitness_list %}
 						<option value="{{ function.name }}">{{ function.name }}</option>
