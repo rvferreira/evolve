@@ -15,13 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 
 from evolutives.views import get_preloader
+from learning.views import index as learning_index
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^evaluate/', include('evolutives.urls')),
+    url(r'^learning/', learning_index, name="learning"),
+    url(r'^team/', TemplateView.as_view(template_name='team.html'), name="learning"),
     url(r'^get_preloader$', get_preloader, name='get_preloader'),
     url(r'^$', RedirectView.as_view(url='evaluate/')),
 ]
