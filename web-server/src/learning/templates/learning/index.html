@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% load staticfiles %}
 
 {% block localdeclarations %}
@@ -6,16 +6,56 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	var content = {{content|safe}};
-	for (var section in content.sections)
-		console.log(content.sections[section].title);
+	for (var section in content.sections){
+		var new_section_title = $('<div class="collapsible-header white-text orange flow-text">'+section+'. '+content.sections[section].title+'</div>');
+		var new_section_content = $('<div class="collapsible-body"></div>');
 		for (var piece_of_content in content.sections[section].content){
-			console.log("\tContent type: " + content.sections[section].content[piece_of_content].type);
-			console.log("\tContent: " + content.sections[section].content[piece_of_content].value);
+			switch (content.sections[section].content[piece_of_content].type) {
+				case "text":
+					$(new_section_content).append('<p class="truncate">'+content.sections[section].content[piece_of_content].value+'</p>');
+					break;
+				case "code":
+					$(new_section_content).append('<div class="container"><code>'+content.sections[section].content[piece_of_content].value+'</code><div>');
+					break;
+				case "image":
+					$(new_section_content).append('<div class="center"><img class="responsive-img center" src="'+content.sections[section].content[piece_of_content].value+'"/></div>');
+					break;
+				default:
+					$(new_section_content).append('<p class="truncate">'+content.sections[section].content[piece_of_content].type+'</p>');
+					break;
+			}
 		}
+
+		var new_section = $("<li>").append(new_section_title).append(new_section_content);
+		$("#wiki").append(new_section);
+	}
+
+	$('.collapsible').collapsible({
+		accordion : false
+	});
 });
 </script>
 {% endblock %}
 
 {% block content %}
+
+<div class="section">
+	<div class="container">
+		<h2 class="header center orange-text hide-on-med-and-down">Learning Central - Evolutive Algorithms</h2>
+		<div class="hide-on-med-and-down">
+			<br>
+			<p class="flow-text center-align">Here is the place for you to learn all about the evolutive algorithms we're using behind our app. Feel free to shoot us an e-mail about any question you may struggle with. =)</p>
+		</div>
+		<br>
+	</div>
+</div>
+
+<div class="section">
+	<div class="container">
+		<ul id="wiki" class="collapsible" data-collapsible="expandable">
+		</ul>
+	</div>
+</div>
+
 
 {% endblock %}

@@ -41,7 +41,6 @@ function run_algorithms(caller){
 					var $form = $(this).find("form");
 					var alg_index = $form.serialize().match(/alg[0-9]*_/)[0][3];
 					var set_params = $form.serialize().replace(/alg[0-9]*_/g,'');
-					console.log(set_params);
 					
 					var $results_container = $form.parent().parent();
 					$results_container.empty();

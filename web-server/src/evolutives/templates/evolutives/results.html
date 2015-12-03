@@ -1,23 +1,67 @@
+<script type="text/javascript">
+		var data = new google.visualization.DataTable();
+		
+		data.addColumn('number', 'X');
+		data.addColumn('number', 'Y');
+
+		for (var elem in {{best_fitness_vector}})
+			data.addRows([[parseInt(elem), parseFloat({{ best_fitness_vector }}[elem])]]);
+
+		var options = {
+			title: 'Best Fitness per Generation',
+			hAxis: {
+			  title: 'Generation'
+			},
+			vAxis: {
+			  title: 'Best Fitness'
+			},
+			series: {
+			  1: {curveType: 'function'}
+			},
+			legend: { position: 'none' },
+			height: 300
+		};
+		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
+</script>
+
 <div class="row">
-	<div class="col s6">
+	<div class="col s12 l6">
 		<div class="row">
 			<div class="col s12">
-				<b>{{ input }}</b>
+				<p><b>Language: {{ in_language }}</b><br>
+				<b>Algorithm: {{ in_algorithm }}</b><br>
+				<b>Population Size: {{ in_population_size }}</b><br>
+				<b>Dimensions: {{ in_n_dimensions }}</b><br></p>
 			</div>
 		</div>
+		{% if best_fitness %}
 		<div class="row">
 			<div class="col s12">
 				Best Fitness: {{ best_fitness }}
 			</div>
 		</div>
+		{% endif %}
+		{% if processing_time %}
 		<div class="row">
 			<div class="col s12">
 				Processing Time: {{ processing_time }} seconds
 			</div>
 		</div>
+		{% if convergence_generation %}
+		{% endif %}
 		<div class="row">
 			<div class="col s12">
 				Convergence Generation: {{ convergence_generation }}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<div class="col s12 m6">
+		<div class="row">
+			<div class="col s12">
+				<div id="chart_div"></div>
+				<!-- {{ best_fitness_vector }} -->
 			</div>
 		</div>
 	</div>

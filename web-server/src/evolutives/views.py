@@ -51,7 +51,10 @@ def run_algorithm(request):
 		'convergence_generation' : results[1],
 		'processing_time' : results[2],
 		'best_fitness_vector' : results[3],
-		'input' : ''.join(["Language : ", language, "; Algorithm : ", algorithm, "; Population_Size : ", request.GET.get('Population_Size'), "; n_dimensions : ", request.GET.get('Dimensions')])
+		'in_language' : language,
+		'in_algorithm' : algorithm,
+		'in_population_size' : request.GET.get('Population_Size'),
+		'in_n_dimensions' : request.GET.get('Dimensions'),
 	})
 	return HttpResponse(template.render(context))
 
