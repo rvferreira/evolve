@@ -45,12 +45,12 @@ def run_algorithm(request):
 		return HttpResponse('')
 
 	template = loader.get_template('evolutives/results.html')	
-	
+
 	context = RequestContext(request, {
-		'best_fitness' : results[0],
-		'convergence_generation' : results[1],
-		'processing_time' : results[2],
-		'best_fitness_vector' : results[3],
+		'best_fitness' : (request.GET.get('Best_Fitness') == 'on') and str(results[0]),
+		'convergence_generation' : (request.GET.get('Convergence_Gen') == 'on') and str(results[1]),
+		'processing_time' : (request.GET.get('Processing_Time') == 'on') and results[2],
+		'best_fitness_vector' : (request.GET.get('Best_Fitness_Per_Gen') == 'on') and results[3],
 		'in_language' : language,
 		'in_algorithm' : algorithm,
 		'in_population_size' : request.GET.get('Population_Size'),

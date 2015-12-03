@@ -3,7 +3,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-	<title>Evolve | {{ page_title }}</title>
+	{% if page_title %}
+		<title>Evolve | {{ page_title }}</title>
+	{% endif %}
 
 
 	<!-- Style Frameworks -->
@@ -28,6 +30,7 @@
 	</style>
 
 	<script type="text/javascript">
+
 		google.load('visualization', '1.0', {'packages':['corechart']});
 	</script>
 
