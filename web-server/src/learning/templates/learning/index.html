@@ -2,9 +2,20 @@
 {% load staticfiles %}
 
 {% block localdeclarations %}
-<script type="text/javascript" src="{% static 'teste.js' %}"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var content = {{content|safe}};
+	for (var section in content.sections)
+		console.log(content.sections[section].title);
+		for (var piece_of_content in content.sections[section].content){
+			console.log("\tContent type: " + content.sections[section].content[piece_of_content].type);
+			console.log("\tContent: " + content.sections[section].content[piece_of_content].value);
+		}
+});
+</script>
 {% endblock %}
 
 {% block content %}
-Olar!
+
 {% endblock %}
