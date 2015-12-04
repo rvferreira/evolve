@@ -3,10 +3,7 @@
 			{
 				"title": "Algoritmos Evolutivos",
 				"content": [
-					{"type": "text", "value": "Algoritmos Evolutivos (AE) são algoritmos que utilizam de conceitos da evolução biológica para resolver problemas complexos"},
-					{"type": "text", "value": "de computação. Agregando a habilidade com que a natureza otimiza seus mecanismos de forma simples à computação, essa"},
-					{"type": "text", "value": "classe de algoritmos mostra-se bastante poderoza e útil, podendo ser aplicada à uma gama bastante diversa de aplicações"},
-					{"type": "text", "value": "e a produzir resultados bastante satisfatórios"},
+					{"type": "text", "value": "Algoritmos Evolutivos (AE) são algoritmos que utilizam de conceitos da evolução biológica para resolver problemas complexos de computação. Agregando a habilidade com que a natureza otimiza seus mecanismos de forma simples à computação, essa classe de algoritmos mostra-se bastante poderoza e útil, podendo ser aplicada à uma gama bastante diversa de aplicações e a produzir resultados bastante satisfatórios"},
 					{"type": "image", "value": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Estimation_of_Distribution_Algorithm_animation.gif"}
 				]
 			},
@@ -37,10 +34,6 @@
 				"content": [
 					{"type": "text", "value": "O arquivo pra editar é o evolve/web-server/src/learning/static/learning/learning.json"},
 					{"type": "text", "value": "Se quiser testar pra ver como ficou é só dar overwrite nele e abrir o server como o Rapha disse"},
-					{"type": "text", "value": "Observe o tamanho das linhas que eu pus, se for ultrapassar crie uma nova linha, poruqe senão fica assim: "},
-					{"type": "text", "value": "\"Observe o tamanho das linhas que eu pus, se for ultrapassar crie uma nova linha, poruqe senão fica assimse for ultrapassar crie uma nova linha, poruqe senão fica assimse for ultrapassar crie uma nova linha, poruqe senão fica assimse for ultrapassar crie uma nova linha, poruqe senão fica assimse for ultrapassar crie uma nova linha, poruqe senão fica assim\""},
-					{"type": "text", "value": "--E o texto não aparece."},
-					{"type": "text", "value": "O Rapha disse que ele arruma esse espaçamento entre as linhas depois"},
 					{"type": "text", "value": "Não tem vírgula depois da última tag do content, tipo essa tag de texto (veja no código)"}
 				]
 			},
@@ -49,32 +42,24 @@
 				"content": [
 					{"type": "text", "value": "Para entender melhor essa classe de algoritmos, é necessário definir alguns conceitos: "},
 					{"type": "text", "value":"- Indivíduo: é o nome dado a uma solução."},
-					{"type": "text", "value":"- População de indivíduos: esse termo é utilizado para definir o conjunto de soluções em um determinado instante de execução do"},
-					{"type": "text", "value":"algoritmo."},
-					{"type": "text", "value":"- Seleção natural: é dado esse nome ao processo que privilegia as melhores soluções encontradas até então (melhores "},
-					{"type": "text", "value":"classificados na função Fitness). É sob esse processo que há a adequação das soluções ao objetivo do problema."},
+					{"type": "text", "value":"- População de indivíduos: esse termo é utilizado para definir o conjunto de soluções em um determinado instante de execução do algoritmo."},
+					{"type": "text", "value":"- Seleção natural: é dado esse nome ao processo que privilegia as melhores soluções encontradas até então (melhores classificados na função Fitness). É sob esse processo que há a adequação das soluções ao objetivo do problema."},
 					{"type": "text", "value":"- Gerações: esse é o nome dado ao número de interações do algorítimo (podendo ter um valor máximo em alguns casos)."},
 					{"type": "text", "value":"- Fitness: essa é uma função que define a qualidade das soluções encontradas em um instante da execução do algoritmo."},
-					{"type": "text", "value":"- Gene: na biologia, gene é uma sequência de nucleotídios que carrega a informação genética de um ser vivo. Nesse contexto, esse "},
-					{"type": "text", "value":"conceito é utilizado de maneira muito parecida: gene é o menor estrutura de informação sobre a característica de um indivíduo"},
-					{"type": "text", "value":" (em algoritmos genéticos, por exemplo, um gene é definido como um bit)."},
-					{"type": "text", "value":"- Alelos: esse é o nome dado aos diferentes valores que um gene pode assumir (no caso de algoritmos genéticos, como citado"},
-					{"type": "text", "value":"anteriormente, é o bit 0 e o bit 1)."},
+					{"type": "text", "value":"- Gene: na biologia, gene é uma sequência de nucleotídios que carrega a informação genética de um ser vivo. Nesse contexto, esse conceito é utilizado de maneira muito parecida: gene é o menor estrutura de informação sobre a característica de um indivíduo (em algoritmos genéticos, por exemplo, um gene é definido como um bit)."},
+					{"type": "text", "value":"- Alelos: esse é o nome dado aos diferentes valores que um gene pode assumir (no caso de algoritmos genéticos, como citado anteriormente, é o bit 0 e o bit 1)."},
 					{"type": "text", "value":"- Cromossomos: Como na biologia, um cromossomo é uma sequência de genes."},
 					{"type": "text", "value":"- Locus: posição de um gene no cromossomo."},
 					{"type": "text", "value":"- Genótipo: O conjunto completo de cromossomos é chamado de genótipo."},
 					{"type": "text", "value":"- Fenótipo: As características de um indivíduo são geradas com base no genótipo."},
-					{"type": "text", "value":"- Mutação: esse é um operador que define, estatísticamente, uma taxa na qual os genes de um indivíduo (pai) são alterados "},
-					{"type": "text", "value":"de modo a produzir um único indivíduo (filho) alterado, no entanto, que possuí cromossomos parecidos com o do pai."},
-					{"type": "text", "value":"- Recombinação: diferentemente da Mutação, esse operador trabalha com dois indivíduos para a formação de um indivíduo filho."},
-					{"type": "text", "value":"Dependendo de como o algoritmo foi implementado, diferentes técnicas podem ser aplicadas aqui."}
+					{"type": "text", "value":"- Mutação: esse é um operador que define, estatísticamente, uma taxa na qual os genes de um indivíduo (pai) são alterados de modo a produzir um único indivíduo (filho) alterado, no entanto, que possuí cromossomos parecidos com o do pai."},
+					{"type": "text", "value":"- Recombinação: diferentemente da Mutação, esse operador trabalha com dois indivíduos para a formação de um indivíduo filho. Dependendo de como o algoritmo foi implementado, diferentes técnicas podem ser aplicadas aqui."}
 				]
 			},
 			{
 				"title": "Código",
 				"content": [
-					{"type": "text", "value": "Em geral, os Algoritmos Evolutivos seguem o mesmo princípio, e o que geralmente os diferenciam são alguns parâmetros e "},
-					{"type": "text", "value": "peculiaridades de implementação. O pseudocódigo abaixo mostra como funcionam. "},
+					{"type": "text", "value": "Em geral, os Algoritmos Evolutivos seguem o mesmo princípio, e o que geralmente os diferenciam são alguns parâmetros e peculiaridades de implementação. O pseudocódigo abaixo mostra como funcionam. "},
 					{"type": "text", "value": "Pseudocódigo de um AE típico:"},
 					{"type": "code", "value": "Entrada: Parâmetros típicos (De Jong, 2006)"}, 
 					{"type": "code", "value":"Saída: População final de soluções"}, 
@@ -93,22 +78,16 @@
 			{
 				"title": "Exemplo: Problema das 8 rainhas",
 				"content": [
-					{"type": "text", "value": "Um bom exemplo para entender o funcionamento de Algoritmos Evolutivos é o Problema das 8 Rainhas. Esse problema consiste"},
-					{"type": "text", "value": "em posicionar 8 rainhas em um tabuleiro de xadrez de dimensão 8x8, sem que nenhuma rainha coloque em check qualquer"},
-					{"type": "text", "value": "uma das outras."},
+					{"type": "text", "value": "Um bom exemplo para entender o funcionamento de Algoritmos Evolutivos é o Problema das 8 Rainhas. Esse problema consiste em posicionar 8 rainhas em um tabuleiro de xadrez de dimensão 8x8, sem que nenhuma rainha coloque em check qualquer uma das outras."},
 					{"type": "code", "value": "Primeiramente, é necessário especificar o domínio dos movimentos de cada rainha, dado pela figura abaixo:"},
 					{"type": "image", "value": "/static/learning/img/primeira.png"},
 					{"type": "code", "value": "Sendo assim, em alguma geração, ou até mesmo no instante inicial, teremos uma configuração do tipo:"},
 					{"type": "image", "value": "/static/learning/img/segunda.png"},
-					{"type": "code", "value": "Note que o fenótipo é mapeado de forma que a posição em vertical do tabuleiro dá valor ao gene de locus correspondente a posição horizontal."},
-					{"type": "code", "value": "Nesse problema, cada rainha no tabuleiro possui uma penalidade que é igual ao número de rainhas que uma pode dar \"check\". Portanto, deseja-se minimizar o número de penalidades."},
-					{"type": "code", "value": "A fim de chegar em uma solução para o problema, dois operadores podem ser usados: Mutação e Recombinação. A mutação funcionaria da seguinte forma:"},
+					{"type": "code", "value": "Note que o fenótipo é mapeado de forma que a posição em vertical do tabuleiro dá valor ao gene de locus correspondente a posição horizontal. Nesse problema, cada rainha no tabuleiro possui uma penalidade que é igual ao número de rainhas que uma pode dar \"check\". Portanto, deseja-se minimizar o número de penalidades. A fim de chegar em uma solução para o problema, dois operadores podem ser usados: Mutação e Recombinação. A mutação funcionaria da seguinte forma:"},
 					{"type": "image", "value": "/static/learning/img/terceira.png"},
-					{"type": "code", "value": "Em que apenas um indivíduo gera unicamente um indivíduo modificado por mutação, que, nesse caso, foi a permutação de dois elementos genes."},
-					{"type": "code", "value": "A recombinação é diferente, e funciona da seguinte maneira:"},
+					{"type": "code", "value": "Em que apenas um indivíduo gera unicamente um indivíduo modificado por mutação, que, nesse caso, foi a permutação de dois elementos genes. A recombinação é diferente, e funciona da seguinte maneira:"},
 					{"type": "image", "value": "/static/learning/img/quarta.png"},
-					{"type": "code", "value": "Nesse caso, dois indivíduos pais deram origem a dois indivíduos filhos que são gerados de uma parcela genética de um dos pais e o restante do outro."},
-					{"type": "code", "value": "Portanto, com uma técnica adequada de seleção, pode-se encontrar certamente a única solução possível para esse problema."}
+					{"type": "code", "value": "Nesse caso, dois indivíduos pais deram origem a dois indivíduos filhos que são gerados de uma parcela genética de um dos pais e o restante do outro. Portanto, com uma técnica adequada de seleção, pode-se encontrar certamente a única solução possível para esse problema."}
 				]
 			}
 		]
