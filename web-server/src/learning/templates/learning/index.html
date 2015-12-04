@@ -12,7 +12,7 @@ $(document).ready(function(){
 		for (var piece_of_content in content.sections[section].content){
 			switch (content.sections[section].content[piece_of_content].type) {
 				case "text":
-					$(new_section_content).append('<p class="truncate">'+content.sections[section].content[piece_of_content].value+'</p>');
+					$(new_section_content).append('<p>'+content.sections[section].content[piece_of_content].value+'</p>');
 					break;
 				case "code":
 					$(new_section_content).append('<div class="container"><code>'+content.sections[section].content[piece_of_content].value+'</code><div>');
